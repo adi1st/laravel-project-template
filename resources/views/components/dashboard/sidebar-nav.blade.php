@@ -23,9 +23,9 @@ $navigation = [
     ],
     [
         'name' => 'Products',
-        'href' => '#',
+        'href' => route('products.index', [], false) ?? '#',
         'icon' => 'box',
-        'current' => false
+        'current' => request()->routeIs('products.*')
     ],
     [
         'name' => 'Orders',

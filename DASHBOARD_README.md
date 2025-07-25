@@ -286,3 +286,170 @@ To extend the dashboard:
 ## License
 
 This dashboard template is open-sourced software licensed under the MIT license.
+## CRUD Operations with Modal Popups
+
+The dashboard now includes complete CRUD (Create, Read, Update, Delete) operations with both modal popups and dedicated pages.
+
+### Features Added:
+
+#### 🔧 **Modal Components**
+- **Reusable Modal Component**: `components/dashboard/modal.blade.php`
+- **Form Components**: Input, Select, Textarea with validation
+- **Responsive Design**: Works on all screen sizes
+- **Keyboard Navigation**: ESC key to close modals
+- **Dynamic Content Loading**: AJAX-powered modal content
+
+#### 📝 **CRUD Operations**
+1. **Create**: Modal popup + dedicated page (`/products/create`)
+2. **Read**: List view with search/filter + detail view (`/products`)
+3. **Update**: Modal popup + dedicated page (`/products/{id}/edit`)
+4. **Delete**: Confirmation modal with safety measures
+
+#### 🎯 **Product Management System**
+- **Full CRUD for Products**: Complete product management
+- **Search & Filter**: Real-time search and category filtering
+- **Pagination**: Built-in pagination support
+- **Sorting**: Sortable columns (name, price, etc.)
+- **Status Management**: Active, Inactive, Draft states
+- **Stock Tracking**: Inventory management
+
+### Usage Examples:
+
+#### Modal CRUD Operations
+```php
+<!-- Create Modal -->
+@component('components.dashboard.modal', [
+    'id' => 'create-modal',
+    'title' => 'Create New Item',
+    'size' => 'lg'
+])
+    <form action="{{ route('items.store') }}" method="POST">
+        @csrf
+        @include('components.dashboard.form.input', [
+            'name' => 'name',
+            'label' => 'Item Name',
+            'required' => true
+        ])
+        <!-- More form fields -->
+    </form>
+@endcomponent
+
+<!-- Edit Modal with AJAX -->
+<script>
+function editItem(id) {
+    fetch(`/items/${id}/get`)
+        .then(response => response.json())
+        .then(data => {
+            // Populate modal with data
+            openModal('edit-modal');
+        });
+}
+</script>
+```
+
+#### Form Components
+```php
+@include('components.dashboard.form.input', [
+    'name' => 'title',
+    'label' => 'Title',
+    'required' => true,
+    'placeholder' => 'Enter title...',
+    'value' => old('title', $item->title ?? '')
+])
+
+@include('components.dashboard.form.select', [
+    'name' => 'category',
+    'label' => 'Category',
+    'required' => true,
+    'options' => [
+        'option1' => 'Option 1',
+        'option2' => 'Option 2'
+    ],
+    'value' => old('category', $item->category ?? '')
+])
+
+@include('components.dashboard.form.textarea', [
+    'name' => 'description',
+    'label' => 'Description',
+    'rows' => 4,
+    'value' => old('description', $item->description ?? '')
+])
+```
+
+### Available Routes:
+
+#### Product CRUD Routes
+- `GET /products` - List all products with search/filter
+- `GET /products/create` - Show create form
+- `POST /products` - Store new product
+- `GET /products/{id}` - Show product details
+- `GET /products/{id}/edit` - Show edit form
+- `PUT /products/{id}` - Update product
+- `DELETE /products/{id}` - Delete product
+- `GET /products/{id}/get` - Get product data (AJAX)
+
+#### Demo Routes
+- `GET /crud-demo` - CRUD operations demonstration
+- `GET /dashboard/advanced` - Advanced dashboard features
+
+### Database Schema:
+
+The Product model includes:
+```php
+Schema::create('products', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->text('description')->nullable();
+    $table->decimal('price', 10, 2);
+    $table->integer('stock')->default(0);
+    $table->string('category');
+    $table->string('status')->default('active');
+    $table->string('image')->nullable();
+    $table->timestamps();
+});
+```
+
+### Modal JavaScript Functions:
+
+```javascript
+// Open modal
+function openModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close modal
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// AJAX form submission
+function submitForm(formId) {
+    const form = document.getElementById(formId);
+    // Handle form submission
+}
+```
+
+### Validation & Error Handling:
+
+- **Server-side validation** with Laravel validation rules
+- **Error display** in form components
+- **Success messages** with flash notifications
+- **Confirmation dialogs** for destructive actions
+
+### Customization:
+
+1. **Modal Sizes**: `sm`, `md`, `lg`, `xl`, `2xl`
+2. **Form Validation**: Built-in Laravel validation
+3. **Custom Actions**: Easy to add new CRUD operations
+4. **Styling**: Consistent Tailwind CSS styling
+
+### Demo Data:
+
+Run the seeder to populate sample products:
+```bash
+php artisan db:seed --class=ProductSeeder
+```
+
+This adds 12 sample products with various categories and statuses for testing all CRUD operations.
