@@ -9,3 +9,83 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+
+/* Custom Dashboard Styles */
+.dashboard-card {
+    @apply bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200;
+}
+
+.dashboard-sidebar {
+    @apply hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col;
+}
+
+.dashboard-main {
+    @apply lg:pl-72;
+}
+
+.dashboard-topbar {
+    @apply sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8;
+}
+
+.dashboard-content {
+    @apply py-6;
+}
+
+.dashboard-container {
+    @apply px-4 sm:px-6 lg:px-8;
+}
+
+/* Custom animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Chart container responsive styles */
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .chart-container {
+        height: 300px;
+    }
+}
+
+/* Table responsive improvements */
+.table-responsive {
+    @apply overflow-x-auto;
+}
+
+.table-responsive table {
+    @apply min-w-full;
+}
+
+/* Custom scrollbar for sidebar */
+.dashboard-sidebar-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dashboard-sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dashboard-sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 2px;
+}
+
+.dashboard-sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+}
